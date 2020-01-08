@@ -1,0 +1,109 @@
+/*b. Napravite jednostavnu igru vješala. Pojmovi se uèitavaju u listu iz datoteke, i u
+svakoj partiji se odabire nasumièni pojam iz liste. Omoguæiti svu
+funkcionalnost koju biste oèekivali od takve igre. Nije nužno crtati vješala,
+dovoljno je na labeli ispisati koliko je pokušaja za odabir slova preostalo. */
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+namespace OOP_LV6_ANALIZA_ZAD2
+{
+public partial class Vjesalo : Form
+{
+Random rand = new Random();
+List<string> list = new List<string>();
+int brojPokusaja;
+string RijecIzListe, RijecULabelu;
+public void Reset()
+{
+RijecIzListe = list[rand.Next(0, list.Count - 1)];
+RijecULabelu = new string('*', RijecIzListe.Length);
+lbl_Rijec.Text = RijecULabelu;
+brojPokusaja = 5;
+lbl_Rez.Text = brojPokusaja.ToString();
+}
+public Vjesalo()
+{
+InitializeComponent();
+}
+private void btn_Exit_Click(object sender, EventArgs e)
+{
+Application.Exit();
+}
+private void Vjesalo_Load(object sender, EventArgs e)
+{
+string line;
+using (System.IO.StreamReader reader = new System.IO.StreamReader
+(@"C:\Users\Ivan\Desktop\vjesalo.txt"))
+{
+while ((line = reader.ReadLine()) != null)
+{
+list.Add(line);
+}
+Reset();
+}
+}
+private void btn_Unesi_Click(object sender, EventArgs e)
+{
+if (tB_Unos.Text.Length == 1)
+{
+if (RijecIzListe.Contains(tB_Unos.Text))
+{
+string temp_rijecx = RijecIzListe;
+while (temp_rijecx.Contains(tB_Unos.Text))
+{
+int index = temp_rijecx.IndexOf(tB_Unos.Text);
+StringBuilder builder = new StringBuilder
+(temp_rijecx);
+builder[index] = '*';
+temp_rijecx = builder.ToString();
+StringBuilder builder2 = new StringBuilder
+(RijecULabelu);
+builder2[index] = Convert.ToChar(tB_Unos.Text);
+RijecULabelu = builder2.ToString();
+}
+lbl_Rijec.Text = RijecULabelu;
+if (RijecULabelu == RijecIzListe)
+{
+MessageBox.Show("Winnn!", "Pobjeda");
+Reset();
+}
+}
+else
+{
+brojPokusaja--;
+lbl_Rez.Text = brojPokusaja.ToString();
+if (brojPokusaja <= 0)
+{
+MessageBox.Show("Loser!", "Kraj");
+Reset();
+}
+}
+}
+else if (tB_Unos.Text.Length > 1)
+{
+if (RijecIzListe == tB_Unos.Text)
+{
+MessageBox.Show("Win!", "Pobjeda");
+Reset();
+}
+else
+{
+brojPokusaja--;
+lbl_Rez.Text = brojPokusaja.ToString();
+if (brojPokusaja <= 0)
+{
+MessageBox.Show("Loser!", "Kraj");
+Reset();
+}
+}
+}
+}
+}
+}
