@@ -1,0 +1,132 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+namespace LV7_ANALIZA
+{
+public partial class Krizic_Kruzic : Form
+{
+bool flag = true;
+int counter = 0;
+static String Player1, Player2;
+public Krizic_Kruzic()
+{
+InitializeComponent();
+}
+public static void SetPlayerNames(String a, String b)
+{
+Player1 = a;
+Player2 = b;
+}
+private void btn_Click(object sender, EventArgs e)
+{
+Button tempBtn = (Button)sender;
+if (flag)
+{
+tempBtn.Text = "X";
+}
+else
+{
+tempBtn.Text = "O";
+}
+flag = !flag;
+tempBtn.Enabled = false;
+counter++;
+IsWin();
+}
+public void IsWin()
+{
+bool Winner = false;
+if ((btn1.Text == btn2.Text) && (btn2.Text == btn3.Text) && (!
+btn1.Enabled)) { Winner = true; }
+else if ((btn4.Text == btn5.Text) && (btn5.Text == btn6.Text) &&
+(!btn4.Enabled)) { Winner = true; }
+else if ((btn7.Text == btn8.Text) && (btn8.Text == btn9.Text) &&
+(!btn7.Enabled)) { Winner = true; }
+else if ((btn1.Text == btn4.Text) && (btn4.Text == btn7.Text) &&
+(!btn1.Enabled)) { Winner = true; }
+else if ((btn2.Text == btn5.Text) && (btn5.Text == btn8.Text) &&
+(!btn2.Enabled)) { Winner = true; }
+else if ((btn3.Text == btn6.Text) && (btn6.Text == btn9.Text) &&
+(!btn3.Enabled)) { Winner = true; }
+else if ((btn1.Text == btn5.Text) && (btn5.Text == btn9.Text) &&
+(!btn1.Enabled)) { Winner = true; }
+else if ((btn3.Text == btn5.Text) && (btn5.Text == btn7.Text) &&
+(!btn3.Enabled)) { Winner = true; }
+int counter2 = 0;
+int counter3 = 0;
+int counter4 = 0;
+if (Winner)
+{
+Disable();
+String PlayWinner = "";
+if (flag)
+{
+PlayWinner = Player1;
+counter2++;
+}
+else
+{
+PlayWinner = Player2;
+counter3++;
+}
+MessageBox.Show("Pobjednik je:" + PlayWinner);
+}
+else if (counter == 9)
+{
+counter4++;
+MessageBox.Show("Nerijeseno je");
+}
+lbl_Player1Wins.Text = counter2.ToString();
+lbl_Draws.Text = counter4.ToString();
+lbl_Player2Wins.Text = counter3.ToString();
+}
+public void Disable()
+{
+try
+{
+foreach (Control c in Controls)
+{
+Button b = (Button)c;
+b.Enabled = false;
+}
+}
+catch { }
+}
+private void NewGameToolStripMenuItem_Click(object sender, EventArgs
+e)
+{
+flag = true;
+counter = 0;
+}
+}
+}
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+namespace LV7_ANALIZA
+{
+public partial class Names : Form
+{
+public Names()
+{
+InitializeComponent();
+}
+private void btn1_Click(object sender, EventArgs e)
+{
+Krizic_Kruzic.SetPlayerNames(tB_Player1.Text, tB_Player2.Text);
+this.Close();
+}
+}
+}
